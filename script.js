@@ -65,7 +65,7 @@ scene.background = tx1;
 
 
 
-
+//posição inicial do carro
 var object_Car = Car();
 object_Car.position.x = -480;
 object_Car.position.y = -280;
@@ -121,62 +121,131 @@ function Wheel() {
   wheel.position.z = 6;
   return wheel;
 }
-
+//velocidade do carro
+var car_speed = 10
 //window.addEventListener("keydown", function (event)
 
+//variaveis de movimento
 var playerOn = 0;
+var go_right = 0;
+var go_left = 0;
+var go_down = 0;
+
 function updateCar() {
 
   console.log(object_Car.position.y);
 
   if (playerOn == 1) {
+
+    
+    object_Car.rotation.z = Math.PI / 2;
+    object_Car.position.y += car_speed;
+    
+
+    /*
     if (object_Car.position.y == -280) {
       if (object_Car.position.x > -485 && object_Car.position.x < +410) {
         object_Car.rotation.z = Math.PI * 2;
-        object_Car.position.x += 10;
+        object_Car.position.x += car_speed;
       }
     }
 
     if (object_Car.position.x == +410) {
       if (object_Car.position.y > -285 && object_Car.position.y < +250) {
         object_Car.rotation.z = Math.PI / 2;
-        object_Car.position.y += 10;
+        object_Car.position.y += car_speed;
 
       }
     }
     if (object_Car.position.y == +250) {
       if (object_Car.position.x > -480 && object_Car.position.x < 415) {
         object_Car.rotation.z = Math.PI;
-        object_Car.position.x -= 10;
+        object_Car.position.x -= car_speed;
 
       }
     }
     if (object_Car.position.x == -480) {
       if (object_Car.position.y > -280 && object_Car.position.y < 255) {
         object_Car.rotation.z = (Math.PI / 2) * 3;
-        object_Car.position.y -= 10;
+        object_Car.position.y -= car_speed;
 
       }
+    }*/
+
+  } else {
+    if (go_right == 1) {
+      object_Car.rotation.z = Math.PI * 2;
+      object_Car.position.x += car_speed;
+    } else {
+      if (go_left == 1) {
+        object_Car.rotation.z = Math.PI;
+        object_Car.position.x -= car_speed;
+      } else {
+        if (go_down == 1) {
+          object_Car.rotation.z = (Math.PI / 2) * 3;
+          object_Car.position.y -= car_speed;
+        }
+      }
+
     }
 
   }
+
 }
 
 window.addEventListener("keydown", function (event) {
   if (event.key == "ArrowUp") {
     playerOn = 1;
+    go_down = 0;
+    go_left = 0;
+    go_right = 0;
     return;
   }
-  
+  if (event.key == "ArrowRight") {
+    go_right = 1;
+    go_left = 0;
+    playerOn = 0;
+    go_down = 0;
+    return;
+  }
+  if (event.key == "ArrowLeft") {
+    go_left = 1;
+    playerOn = 0;
+    go_down = 0;
+    go_right = 0;
+    return;
+  }
+  if (event.key == "ArrowDown") {
+    go_left = 0;
+    playerOn = 0;
+    go_down = 1;
+    go_right = 0;
+    return;
+  }
+
 });
+
 
 window.addEventListener("keyup", function (event) {
   if (event.key == "ArrowUp") {
     playerOn = 0;
     return;
   }
+  if (event.key == "ArrowDown") {
+    go_down = 0;
+    return;
+  }
+  if (event.key == "ArrowLeft") {
+    go_left = 0;
+    return;
+  }
+  if (event.key == "ArrowRight") {
+    go_right = 0;
+    return;
+  }
   
 });
+
 //comentario para testar github
 var animate = function () {
 
