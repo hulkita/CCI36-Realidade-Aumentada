@@ -5,7 +5,7 @@ var razao = window.innerWidth / window.innerHeight;
 var camera_Width = 1500;
 var cameraHeight = camera_Width / razao
 
-var camera = new THREE.OrthographicCamera(
+/*var camera = new THREE.OrthographicCamera(
   camera_Width / -2,
   camera_Width / 2,
   cameraHeight / 2,
@@ -13,18 +13,21 @@ var camera = new THREE.OrthographicCamera(
   0,
   1000
 
-);
+);*/
+
+var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
 camera.position.set(0, 0, 300);
-//camera.up.set(0, 0, 1);
+camera.up.set(0, 0, 1);
 dVector = new THREE.Vector3(0, 0, 0);
 camera.lookAt(dVector);
 
 //renderMap(cameraWidth, cameraHeight * 2);
 
 
-//var controls = new THREE.OrbitControls(camera);
-var axesHelper = new THREE.AxesHelper(5);
+var controls = new THREE.OrbitControls(camera);
+controls.target.set(0, 10, 0);
+var axesHelper = new THREE.AxesHelper(150);
 scene.add(axesHelper);
 
 
@@ -44,7 +47,8 @@ function getLineMarkings(mapWidth, mapHeight) {
 
 var renderer = new THREE.WebGLRenderer({
   canvas: document.getElementById("mycanvas"),
-  antialias: true
+  antialias: true,
+  alpha: true
 });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
@@ -60,9 +64,19 @@ document.body.appendChild(renderer.domElement);
 //scene.add(leg);
 
 //adicionando imagem de fundo
-tx1 = new THREE.TextureLoader().load('minhapista.png');
+tx1 = new THREE.TextureLoader().load('minhapista3.jpg');
 scene.background = tx1;
-
+//window.innerWidth / window.innerHeight;
+//arrumando imagem na tela
+const targetAspect = window.innerWidth / window.innerHeight;
+const imageAspect = 544 / 544;
+const factor = imageAspect / targetAspect;
+// When factor larger than 1, that means texture 'wilder' than target。 
+// we should scale texture height to target height and then 'map' the center  of texture to target， and vice versa.
+scene.background.offset.x = factor > 1 ? (1 - 1 / factor) / 2 : 0;
+scene.background.repeat.x = factor > 1 ? 1 / factor : 1;
+scene.background.offset.y = factor > 1 ? 0 : (1 - factor) / 2;
+scene.background.repeat.y = factor > 1 ? 1 : factor;
 
 
 //posição inicial do carro
@@ -131,18 +145,22 @@ var go_right = 0;
 var go_left = 0;
 var go_down = 0;
 
+//var tese_z = 1;
+
 function updateCar() {
 
   console.log(object_Car.position.y);
+  /*
+  if (tese_z == 1) {
 
+    object_Car.position.z -= 0.5
+  }*/
   if (playerOn == 1) {
 
     
     object_Car.rotation.z = Math.PI / 2;
     object_Car.position.y += car_speed;
     
-
-    /*
     if (object_Car.position.y == -280) {
       if (object_Car.position.x > -485 && object_Car.position.x < +410) {
         object_Car.rotation.z = Math.PI * 2;
@@ -170,14 +188,16 @@ function updateCar() {
         object_Car.position.y -= car_speed;
 
       }
-    }*/
+    }
 
   } else {
     if (go_right == 1) {
       object_Car.rotation.z = Math.PI * 2;
+      //object_Car.rotation.x = Math.PI / 4;
       object_Car.position.x += car_speed;
     } else {
       if (go_left == 1) {
+        //object_Car.rotation.x = Math.PI * 2;
         object_Car.rotation.z = Math.PI;
         object_Car.position.x -= car_speed;
       } else {
@@ -246,13 +266,59 @@ window.addEventListener("keyup", function (event) {
   
 });
 
+var percurso_em_x = 0
+var percurso_em_y = 0
+
+var tamanho_x = 800
+var tamanho_y = 400
+
+function updateCar2() {
+
+  //object_Car.rotation.z = Math.PI / 2;
+  //object_Car.position.y += car_speed;
+  
+  if (object_Car.position.y == -280) {
+    if (object_Car.position.x > -485 && object_Car.position.x < +410) {
+      object_Car.rotation.z = Math.PI * 2;
+      object_Car.position.x += car_speed;
+    }
+  }
+
+  if (object_Car.position.x == +410) {
+    if (object_Car.position.y > -285 && object_Car.position.y < +250) {
+      object_Car.rotation.z = Math.PI / 2;
+      object_Car.position.y += car_speed;
+
+    }
+  }
+  if (object_Car.position.y == +250) {
+    if (object_Car.position.x > -480 && object_Car.position.x < 415) {
+      object_Car.rotation.z = Math.PI;
+      object_Car.position.x -= car_speed;
+
+    }
+  }
+  if (object_Car.position.x == -480) {
+    if (object_Car.position.y > -280 && object_Car.position.y < 255) {
+      object_Car.rotation.z = (Math.PI / 2) * 3;
+      object_Car.position.y -= car_speed;
+
+    }
+  }
+
+
+
+  
+}
+
 //comentario para testar github
 var animate = function () {
 
   requestAnimationFrame(animate);
-  updateCar();
-  //controls.update();
+  //updateCar();
+  updateCar2();
+  controls.update();
   renderer.render(scene, camera);
-
+  console.log(camera.projectionMatrix)
 };
 animate();
