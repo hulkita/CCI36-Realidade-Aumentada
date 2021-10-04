@@ -23,7 +23,7 @@ camera.lookAt(dVector);
 //renderMap(cameraWidth, cameraHeight * 2);
 
 
-//var controls = new THREE.OrbitControls(camera);
+var controls = new THREE.OrbitControls(camera);
 var axesHelper = new THREE.AxesHelper(5);
 scene.add(axesHelper);
 
@@ -86,13 +86,25 @@ scene.add(directional_light);
 function Car() {
   var car = new THREE.Group();
 
-  var backWheel = Wheel();
-  backWheel.position.x = -18;
-  car.add(backWheel);
+  var backWheel1 = Wheel();
+  backWheel1.position.x = -18;
+  backWheel1.position.y = 18 ;
+  car.add(backWheel1);
 
-  var frontWheel = Wheel();
-  frontWheel.position.x = 18;
-  car.add(frontWheel);
+  var backWheel2 = Wheel();
+  backWheel2.position.x = -18;
+  backWheel2.position.y = -18 ;
+  car.add(backWheel2);
+
+  var frontWheel1 = Wheel();
+  frontWheel1.position.x = 18;
+  frontWheel1.position.y = 18;
+  car.add(frontWheel1);
+
+  var frontWheel2 = Wheel();
+  frontWheel2.position.x = 18;
+  frontWheel2.position.y = -18;
+  car.add(frontWheel2);
 
   var main = new THREE.Mesh(
     new THREE.BoxBufferGeometry(60, 30, 15),
@@ -114,10 +126,12 @@ function Car() {
 }
 
 function Wheel() {
-  var wheel = new THREE.Mesh(
-    new THREE.BoxBufferGeometry(12, 40, 12),
-    new THREE.MeshLambertMaterial({ color: 0x333333 })
-  );
+
+  const geometry = new THREE.CylinderGeometry( 6, 6, 5, 32 );
+  const material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+  //const cylinder = new THREE.Mesh( geometry, material );
+
+  var wheel = new THREE.Mesh( geometry, material );
   wheel.position.z = 6;
   return wheel;
 }
@@ -251,7 +265,7 @@ var animate = function () {
 
   requestAnimationFrame(animate);
   updateCar();
-  //controls.update();
+  controls.update();
   renderer.render(scene, camera);
 
 };
