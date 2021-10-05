@@ -12,8 +12,8 @@
 /** Config Variaveis */
 // tamanho canvas
 var canvasnome = "mycanvas"
-var altura = window.innerHeight//600//window.innerHeight * 0.7; 
-var largura = window.innerWidth//600//window.innerWidth * 0.7;
+var altura = 626 //window.innerHeight//600//window.innerHeight * 0.7; 
+var largura = 1000//window.innerWidth//600//window.innerWidth * 0.7;
 var razao = largura / altura;
 //imagem
 var imagem = 'minhapista5.jpg'
@@ -32,7 +32,7 @@ var object_Car = makeCar();
 //posição inicial do carro
 object_Car.position.x = xPistaIni;
 object_Car.position.y = yPistaIni;
-var car_speed = 10
+var car_speed = 5
 var carMove = true
 
 // criando cena
@@ -62,13 +62,17 @@ camera.position.set(450, 60, 650);
 camera.up.set(0, 0, 1);
 dVector = new THREE.Vector3(0, 0, 0);
 camera.lookAt(dVector);
-camera.translateX(360)
-camera.translateY(130)
+camera.translateX(210)
+camera.translateY(300)
 
-camera.rotateZ( Math.PI/31);
-camera.rotateX(-Math.PI/16);
+camera.rotateZ( Math.PI/31+0.2);
+camera.rotateX(-Math.PI/16-0.15);
 camera.rotateY(-Math.PI/16);
 camera.translateZ(100)
+
+/*console.log("valor de pi:"+Math.PI/31);
+console.log("valor de pi:"+-Math.PI/16);*/
+
 //var controls = new THREE.OrbitControls(camera);
 //camera.translateZ(20)
 
@@ -88,10 +92,10 @@ const imageAspect = 1000 / 626;
 const factor = imageAspect / targetAspect;
 // When factor larger than 1, that means texture 'wilder' than target。 
 // we should scale texture height to target height and then 'map' the center  of texture to target， and vice versa.
-scene.background.offset.x = factor > 1 ? (1 - 1 / factor) / 2 : 0;
+/*scene.background.offset.x = factor > 1 ? (1 - 1 / factor) / 2 : 0;
 scene.background.repeat.x = factor > 1 ? 1 / factor : 1;
 scene.background.offset.y = factor > 1 ? 0 : (1 - factor) / 2;
-scene.background.repeat.y = factor > 1 ? 1 : factor;
+scene.background.repeat.y = factor > 1 ? 1 : factor;*/
 
 // config directional light
 directional_light.position.set(100, -300, 400);
@@ -243,7 +247,7 @@ var animate = function () {
   updateCar();
   //controls.update();
   renderer.render(scene, camera);
-  console.log(camera.position)
+  //console.log(camera.position)
 };
 /** Fim funçoes */
 
