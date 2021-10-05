@@ -33,6 +33,9 @@ controls.target.set(0, 10, 0);
 var axesHelper = new THREE.AxesHelper(150);
 scene.add(axesHelper);
 
+var gridHelper = new THREE.GridHelper(300, 10 );
+scene.add( gridHelper );
+gridHelper.rotation.x = (Math.PI)/2;
 
 function getLineMarkings(mapWidth, mapHeight) {
   canvas.width = mapWidth;
@@ -258,6 +261,14 @@ window.addEventListener("keydown", function (event) {
     go_right = 0;
     return;
   }
+  if (event.key == "PageUp") {
+    ocultar_Carro_on += 1;
+    return;
+  }
+  if (event.key == "PageDown") {
+    ocultar_eixos_on += 1;
+    return;
+  }
 
 });
 
@@ -358,6 +369,28 @@ function updateCar3() {
   //console.log("X: "+object_Car.position.x+" Y: "+object_Car.position.y+ " tamanho tela:"+largura+"x"+altura)
 }
 
+//função para ocultar o carro da cena
+
+var ocultar_Carro_on = 0;
+var ocultar_eixos_on = 0;
+function ocultar_pedidos() {
+  if (ocultar_Carro_on % 2 == 1) {
+    object_Car.visible = false;
+  }
+  else{
+    object_Car.visible = true;
+  }
+  if (ocultar_eixos_on % 2 == 1) {
+    axesHelper.visible = false;
+    gridHelper.visible = false;
+  }
+  else{
+    axesHelper.visible = true;
+    gridHelper.visible = true;
+  }
+}
+
+alert("Pressione PageUP para mostrar ou esconder o carro.\nPressione PageDown para mostrar ou esconder os eixos.");
 
 //comentario para testar github
 var animate = function () {
@@ -366,6 +399,7 @@ var animate = function () {
   //updateCar();
   //updateCar2();
   updateCar3();
+  ocultar_pedidos();
   controls.update();
   renderer.render(scene, camera);
   //console.log(camera.projectionMatrix)
