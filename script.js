@@ -12,18 +12,18 @@
 /** Config Variaveis */
 // tamanho canvas
 var canvasnome = "mycanvas"
-var altura = 600//window.innerHeight * 0.7; 
-var largura = 600//window.innerWidth * 0.7;
+var altura = window.innerHeight//600//window.innerHeight * 0.7; 
+var largura = window.innerWidth//600//window.innerWidth * 0.7;
 var razao = largura / altura;
 //imagem
-var imagem = 'minhapista4.jpg'
+var imagem = 'minhapista5.jpg'
 
 // camera
 var camera_Width = 1500;
 var cameraHeight = camera_Width / razao
 
 // percurso carro
-var xPista = largura / 2 ;
+var xPista = largura / 5;
 var yPista = altura / 2 ;
 var xPistaIni = 100;
 var yPistaIni = 100;
@@ -40,10 +40,10 @@ var scene = new THREE.Scene();
 // criando camera
 var camera = new THREE.PerspectiveCamera(75, razao, 0.1, 1000);
 // orbit control
-var controls = new THREE.OrbitControls(camera);
+//var controls = new THREE.OrbitControls(camera);
 //axes e grid helper
-var axesHelper = new THREE.AxesHelper(150);
-var gridHelper = new THREE.GridHelper(300, 10 );
+var axesHelper = new THREE.AxesHelper(250);
+var gridHelper = new THREE.GridHelper(400, 10 );
 // add renderer
 var renderer = new THREE.WebGLRenderer({
   canvas: document.getElementById(canvasnome),
@@ -58,13 +58,22 @@ var directional_light = new THREE.DirectionalLight(0xffffff, 0.6);
 /** Configuraçoes */
 
 //definicoes camera
-camera.position.set(0, 0, 500);
+camera.position.set(450, 60, 650);
 camera.up.set(0, 0, 1);
 dVector = new THREE.Vector3(0, 0, 0);
 camera.lookAt(dVector);
+camera.translateX(360)
+camera.translateY(130)
+
+camera.rotateZ( Math.PI/31);
+camera.rotateX(-Math.PI/16);
+camera.rotateY(-Math.PI/16);
+camera.translateZ(100)
+//var controls = new THREE.OrbitControls(camera);
+//camera.translateZ(20)
 
 // config orbit control
-controls.target.set(0, 10, 0);
+//controls.target.set(dVector);
 
 // config renderer
 renderer.setSize(largura, altura);
@@ -75,7 +84,7 @@ scene.background = new THREE.TextureLoader().load(imagem);
 
 //arrumando imagem na tela
 const targetAspect = razao;
-const imageAspect = 544 / 544;
+const imageAspect = 1000 / 626;
 const factor = imageAspect / targetAspect;
 // When factor larger than 1, that means texture 'wilder' than target。 
 // we should scale texture height to target height and then 'map' the center  of texture to target， and vice versa.
@@ -89,8 +98,8 @@ directional_light.position.set(100, -300, 400);
 
 // config gridhelper 
 gridHelper.rotation.x = (Math.PI)/2;
-gridHelper.position.x = largura/4;
-gridHelper.position.y = altura/4;
+gridHelper.position.x = 200//largura/4;
+gridHelper.position.y = 200//altura/4;
 
 /** Fim Configurações */
 
@@ -232,9 +241,9 @@ document.getElementById("car").onclick = function() {
 var animate = function () {
   requestAnimationFrame(animate);
   updateCar();
-  controls.update();
+  //controls.update();
   renderer.render(scene, camera);
-  //console.log(camera.projectionMatrix)
+  console.log(camera.position)
 };
 /** Fim funçoes */
 
