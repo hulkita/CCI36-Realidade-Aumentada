@@ -41,8 +41,9 @@ var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75, razao, 0.1, 1000);
 // orbit control
 var controls = new THREE.OrbitControls(camera);
-//axes helper
+//axes e grid helper
 var axesHelper = new THREE.AxesHelper(150);
+var gridHelper = new THREE.GridHelper(300, 10 );
 // add renderer
 var renderer = new THREE.WebGLRenderer({
   canvas: document.getElementById(canvasnome),
@@ -85,6 +86,11 @@ scene.background.repeat.y = factor > 1 ? 1 : factor;
 
 // config directional light
 directional_light.position.set(100, -300, 400);
+
+// config gridhelper 
+gridHelper.rotation.x = (Math.PI)/2;
+gridHelper.position.x = largura/4
+gridHelper.position.y = altura/4
 
 /** Fim Configurações */
 
@@ -160,6 +166,29 @@ function updateCar() {
   //console.log("X: "+object_Car.position.x+" Y: "+object_Car.position.y+ " tamanho tela:"+largura+"x"+altura)
 }
 
+// ocultar
+window.addEventListener("keydown", function (event) {
+  if (event.key == "PageUp") {
+    if(object_Car.visible == true)
+      object_Car.visible = false;
+    else
+      object_Car.visible = true;
+    return;
+  }
+  if (event.key == "PageDown") {
+    if(axesHelper.visible == true){
+      axesHelper.visible = false;
+      gridHelper.visible = false;
+    }      
+    else{
+      axesHelper.visible = true;
+      gridHelper.visible = true;
+    }     
+    return;
+  }
+
+});
+
 var animate = function () {
   requestAnimationFrame(animate);
   updateCar();
@@ -171,9 +200,12 @@ var animate = function () {
 
 /** Scene add */
 scene.add(axesHelper);
+scene.add( gridHelper );
 scene.add(object_Car);
 scene.add(ambient_light);
 scene.add(directional_light);
 /** Fim Scene add */
+
+//alert("Pressione PageUP para mostrar ou esconder o carro.\nPressione PageDown para mostrar ou esconder os eixos.");
 
 animate();
