@@ -336,26 +336,26 @@ function updateCar3() {
 
     if (object_Car.position.y > -5 && object_Car.position.y < yPista) {
       object_Car.rotation.z = Math.PI / 2;
-      object_Car.position.y += car_speed;
-      console.log("teste2")
+      object_Car.position.y += car_speed;      
 
     }
   }
   if (object_Car.position.y >= yPista) {
-    if (object_Car.position.x > 0 && object_Car.position.x < (xPista+5)) {
+    
+    if (object_Car.position.x > 0 && object_Car.position.x < (xPista*1.05)) {
       object_Car.rotation.z = Math.PI;
       object_Car.position.x -= car_speed;
 
     }
   }
   if (object_Car.position.x <= 0) {
-    if (object_Car.position.y > 0 && object_Car.position.y < (yPista+5)) {
+    if (object_Car.position.y > 0 && object_Car.position.y < (yPista*1.05)) {
       object_Car.rotation.z = (Math.PI / 2) * 3;
       object_Car.position.y -= car_speed;
 
     }
   } 
-  console.log("X: "+object_Car.position.x+" Y: "+object_Car.position.y)
+  //console.log("X: "+object_Car.position.x+" Y: "+object_Car.position.y+ " tamanho tela:"+largura+"x"+altura)
 }
 
 
