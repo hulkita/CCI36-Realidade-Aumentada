@@ -71,7 +71,7 @@ renderer.setSize(largura, altura);
 document.body.appendChild(renderer.domElement);
 
 //adicionando imagem de fundo
-scene.background = new THREE.TextureLoader().load(imagem);;
+scene.background = new THREE.TextureLoader().load(imagem);
 
 //arrumando imagem na tela
 const targetAspect = razao;
@@ -89,8 +89,8 @@ directional_light.position.set(100, -300, 400);
 
 // config gridhelper 
 gridHelper.rotation.x = (Math.PI)/2;
-gridHelper.position.x = largura/4
-gridHelper.position.y = altura/4
+gridHelper.position.x = largura/4;
+gridHelper.position.y = altura/4;
 
 /** Fim Configurações */
 
@@ -167,25 +167,67 @@ function updateCar() {
 
 // ocultar
 window.addEventListener("keydown", function (event) {
-  if (event.key == "PageUp") {
-    if(object_Car.visible == true)
+  if (event.key == "c") {
+    if(object_Car.visible == true){
       object_Car.visible = false;
-    else
+      carAparece.checked = false;
+    }      
+    else{
       object_Car.visible = true;
+      carAparece.checked = true;
+    }      
     return;
   }
-  if (event.key == "PageDown") {
+  if (event.key == "v") {
     if(axesHelper.visible == true){
       axesHelper.visible = false;
       gridHelper.visible = false;
+      gridAndAxes.checked = false;
     }      
     else{
       axesHelper.visible = true;
       gridHelper.visible = true;
+      gridAndAxes.checked = true;
     }     
     return;
   }
 });
+
+
+var gridAndAxes = document.getElementById("gridhelper");
+var carAparece = document.getElementById("car");
+
+document.getElementById("gridhelper").onclick = function() {
+  if(gridAndAxes.checked){
+    axesHelper.visible = true;
+    gridHelper.visible = true;
+  }
+  else{
+    axesHelper.visible = false;
+    gridHelper.visible = false;
+  }
+}
+
+document.getElementById("gridhelper").onclick = function() {
+  if(gridAndAxes.checked){
+    axesHelper.visible = true;
+    gridHelper.visible = true;
+  }
+  else{
+    axesHelper.visible = false;
+    gridHelper.visible = false;
+  }
+}
+document.getElementById("car").onclick = function() {
+  if(carAparece.checked){
+    object_Car.visible = true;
+  }
+  else{
+    object_Car.visible = false;
+  }
+}
+
+
 
 var animate = function () {
   requestAnimationFrame(animate);
