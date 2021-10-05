@@ -23,10 +23,10 @@ var camera_Width = 1500;
 var cameraHeight = camera_Width / razao
 
 // percurso carro
-var xPista = largura / 2;
-var yPista = altura / 2;
-var xPistaIni = 0;
-var yPistaIni = 0;
+var xPista = largura / 2 ;
+var yPista = altura / 2 ;
+var xPistaIni = 100;
+var yPistaIni = 100;
 //carro
 var object_Car = makeCar();
 //posição inicial do carro
@@ -138,27 +138,26 @@ function makeWheel() {
 
 function updateCar() {
   if (carMove == false) return;
-  if (object_Car.position.y <= 0) {
-    if (object_Car.position.x > -5 && object_Car.position.x < xPista) {
+  if (object_Car.position.y <= yPistaIni) {
+    if (object_Car.position.x > (xPistaIni-5) && object_Car.position.x < xPista) {
       object_Car.rotation.z = Math.PI * 2;
       object_Car.position.x += car_speed;
     }
   }
-
   if (object_Car.position.x >= xPista) {
-    if (object_Car.position.y > -5 && object_Car.position.y < yPista) {
+    if (object_Car.position.y > (yPistaIni-5) && object_Car.position.y < yPista) {
       object_Car.rotation.z = Math.PI / 2;
       object_Car.position.y += car_speed;
     }
   }
   if (object_Car.position.y >= yPista) {
-    if (object_Car.position.x > 0 && object_Car.position.x < (xPista * 1.05)) {
+    if (object_Car.position.x > xPistaIni && object_Car.position.x < (xPista * 1.05)) {
       object_Car.rotation.z = Math.PI;
       object_Car.position.x -= car_speed;
     }
   }
-  if (object_Car.position.x <= 0) {
-    if (object_Car.position.y > 0 && object_Car.position.y < (yPista * 1.05)) {
+  if (object_Car.position.x <= xPistaIni) {
+    if (object_Car.position.y > yPistaIni && object_Car.position.y < (yPista * 1.05)) {
       object_Car.rotation.z = (Math.PI / 2) * 3;
       object_Car.position.y -= car_speed;
     }
@@ -186,7 +185,6 @@ window.addEventListener("keydown", function (event) {
     }     
     return;
   }
-
 });
 
 var animate = function () {
@@ -200,7 +198,7 @@ var animate = function () {
 
 /** Scene add */
 scene.add(axesHelper);
-scene.add( gridHelper );
+scene.add(gridHelper);
 scene.add(object_Car);
 scene.add(ambient_light);
 scene.add(directional_light);
