@@ -19,6 +19,7 @@ As imagens utilizadas para o trabalho foram armazenadas na pasta "img" enquanto 
 Recomenda-se utilizar o programa visual [Visual Studio Code](https://code.visualstudio.com/download). Como servidor foi utilizado uma extensão chamada [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer).
 
 Após instalados o programa e a extensão, abra a página "projeto.html" e basta clicar em "Go Live" no canto inferior direito da tela, conforme pode ser visto abaixo:
+
 ![alt text](img/liveserver.png)
 
 Automaticamente a página do browser se abrirá com a animação.
