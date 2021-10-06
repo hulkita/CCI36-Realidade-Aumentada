@@ -3,7 +3,7 @@
  *  Grupo: HSO
  *  Alunos: 
  *        - Carlos Renato de Andrade Figueiredo
- *        - Matheus da Silva xxMartins
+ *        - Matheus da Silva Martins
  *        - Samara Ribeiro Silva
  * 
  */
