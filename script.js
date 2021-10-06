@@ -3,7 +3,7 @@
  *  Grupo: HSO
  *  Alunos: 
  *        - Carlos Renato de Andrade Figueiredo
- *        - Matheus Martins
+ *        - Matheus da Silva xxMartins
  *        - Samara Ribeiro Silva
  * 
  */
@@ -12,38 +12,33 @@
 /** Config Variaveis */
 // tamanho canvas
 var canvasnome = "mycanvas"
-var altura = 626 //window.innerHeight//600//window.innerHeight * 0.7; 
+var altura = 876 //window.innerHeight//600//window.innerHeight * 0.7; 
 var largura = 1000//window.innerWidth//600//window.innerWidth * 0.7;
 var razao = largura / altura;
 //imagem
-var imagem = 'minhapista5.jpg'
+var imagem = 'minhapista8.jpg'
 
 // camera
-var camera_Width = 1500;
-var cameraHeight = camera_Width / razao
+/*var camera_Width = 1500;
+var cameraHeight = camera_Width / razao*/
 
 // percurso carro
-var xPista = largura / 5;
-var yPista = altura / 2 ;
-var xPistaIni = 100;
-var yPistaIni = 100;
+var xPista = -1;
+var zPista = 1;
+var xPistaIni = -0.5;
+var zPistaIni = 0.5 ;
 //carro
 var object_Car = makeCar();
-//posição inicial do carro
-object_Car.position.x = xPistaIni;
-object_Car.position.y = yPistaIni;
-var car_speed = 5
+var car_speed = 0.01
 var carMove = true
-
+var carScale = 0.005
+// criando camera
+var camera = new THREE.PerspectiveCamera(30, razao, 0.01, 1000);
 // criando cena
 var scene = new THREE.Scene();
-// criando camera
-var camera = new THREE.PerspectiveCamera(75, razao, 0.1, 1000);
-// orbit control
-//var controls = new THREE.OrbitControls(camera);
 //axes e grid helper
-var axesHelper = new THREE.AxesHelper(250);
-var gridHelper = new THREE.GridHelper(400, 10 );
+var axesHelper = new THREE.AxesHelper(15);
+var gridHelper = new THREE.GridHelper(25, 50);
 // add renderer
 var renderer = new THREE.WebGLRenderer({
   canvas: document.getElementById(canvasnome),
@@ -53,58 +48,44 @@ var renderer = new THREE.WebGLRenderer({
 
 var ambient_light = new THREE.AmbientLight(0xffffff, 0.6);
 var directional_light = new THREE.DirectionalLight(0xffffff, 0.6);
+
+var gridAparece = document.getElementById("gridhelper");
+var axesAparece = document.getElementById("axeshelper");
+var carAparece  = document.getElementById("car");
+var carStop     = document.getElementById("stopcar");
+
+// matrix e position encontrados em "encurtador.com.br/iGIL0"
+var m = new THREE.Matrix4();
+      m.set(
+            0.6982829434563605,   -0.7157625632287165,  -0.009213249056587726,  0.05389258721612304,
+            -0.44214467755840614, -0.4211535266535143,  -0.7919203186521232,    0.34156311694689745,
+            0.5629467248192267,   0.557058040124694,    -0.6105549319657817,    -6.986757448448397,
+            0.0,                  0.0,                   0.0,                   1.0   
+      );
+
 /** Fim config variaveis */
 
 /** Configuraçoes */
 
 //definicoes camera
-camera.position.set(450, 60, 650);
-camera.up.set(0, 0, 1);
-dVector = new THREE.Vector3(0, 0, 0);
-camera.lookAt(dVector);
-camera.translateX(210)
-camera.translateY(300)
 
-camera.rotateZ( Math.PI/31+0.2);
-camera.rotateX(-Math.PI/16-0.15);
-camera.rotateY(-Math.PI/16);
-camera.translateZ(100)
 
-/*console.log("valor de pi:"+Math.PI/31);
-console.log("valor de pi:"+-Math.PI/16);*/
-
-//var controls = new THREE.OrbitControls(camera);
-//camera.translateZ(20)
-
-// config orbit control
-//controls.target.set(dVector);
-
-// config renderer
-renderer.setSize(largura, altura);
-document.body.appendChild(renderer.domElement);
+camera.applyMatrix4(m);
+camera.position.set(4.04656026,  4.07445422, -3.99481192); 
+camera.lookAt(0, 0, 0);
+camera.setViewOffset(largura,altura,20,20,largura,altura);
+camera.updateMatrixWorld();
 
 //adicionando imagem de fundo
 scene.background = new THREE.TextureLoader().load(imagem);
 
-//arrumando imagem na tela
-const targetAspect = razao;
-const imageAspect = 1000 / 626;
-const factor = imageAspect / targetAspect;
-// When factor larger than 1, that means texture 'wilder' than target。 
-// we should scale texture height to target height and then 'map' the center  of texture to target， and vice versa.
-/*scene.background.offset.x = factor > 1 ? (1 - 1 / factor) / 2 : 0;
-scene.background.repeat.x = factor > 1 ? 1 / factor : 1;
-scene.background.offset.y = factor > 1 ? 0 : (1 - factor) / 2;
-scene.background.repeat.y = factor > 1 ? 1 : factor;*/
-
 // config directional light
 directional_light.position.set(100, -300, 400);
 
-// config gridhelper 
-gridHelper.rotation.x = (Math.PI)/2;
-gridHelper.position.x = 200//largura/4;
-gridHelper.position.y = 200//altura/4;
-
+// config carro
+object_Car.position.x = xPistaIni;
+object_Car.position.z = zPistaIni;
+object_Car.scale.set(carScale,carScale,carScale);
 /** Fim Configurações */
 
 /** Funcoes */
@@ -116,67 +97,79 @@ function makeCar() {
   positions = [[-18, 18], [-18, -18], [18, 18], [18, -18]];
   for (var i = 0; i < positions.length; i++) {
     x = positions[i][0]
-    y = positions[i][1]
+    z = positions[i][1]
     m = wheel.clone()
     m.position.x = x
-    m.position.y = y
+    m.position.z = z
     car.add(m)
   }
   //add parte principal
   var main = new THREE.Mesh(
-    new THREE.BoxBufferGeometry(60, 30, 15),
+    new THREE.BoxBufferGeometry(60, 15, 30),
     new THREE.MeshLambertMaterial({ color: 0xff0000 })
   );
-  main.position.z = 12;
+  main.position.y = 12;
   car.add(main);
   // add cabine
   var cabin = new THREE.Mesh(
-    new THREE.BoxBufferGeometry(33, 24, 12),
+    new THREE.BoxBufferGeometry(33, 12, 24),
     new THREE.MeshLambertMaterial({ color: 0x0000ff })
   );
   cabin.position.x = -6;
-  cabin.position.z = 25.5;
+  cabin.position.y = 25.5;
   car.add(cabin);
+  
+  //car.rotation.x=-Math.PI/2;
   return car;
 }
-
 //criando rodas
 function makeWheel() {
   const geometry = new THREE.CylinderGeometry(6, 6, 5, 32);
   const material = new THREE.MeshBasicMaterial({ color: 0x000000 });
   var wheel = new THREE.Mesh(geometry, material);
-  wheel.position.z = 6;
+  wheel.position.y = 6;
+  wheel.rotation.x = Math.PI/2;
   return wheel;
 }
 
 function updateCar() {
-  if (carMove == false) return;
-  if (object_Car.position.y <= yPistaIni) {
-    if (object_Car.position.x > (xPistaIni-5) && object_Car.position.x < xPista) {
-      object_Car.rotation.z = Math.PI * 2;
-      object_Car.position.x += car_speed;
-    }
-  }
-  if (object_Car.position.x >= xPista) {
-    if (object_Car.position.y > (yPistaIni-5) && object_Car.position.y < yPista) {
-      object_Car.rotation.z = Math.PI / 2;
-      object_Car.position.y += car_speed;
-    }
-  }
-  if (object_Car.position.y >= yPista) {
-    if (object_Car.position.x > xPistaIni && object_Car.position.x < (xPista * 1.05)) {
-      object_Car.rotation.z = Math.PI;
+  // implementando movimento
+  if (carMove == true) {
+  if (object_Car.position.z <= zPistaIni) {
+    if (object_Car.position.x <= xPistaIni && object_Car.position.x > xPista) {        
+      object_Car.position.z =  zPistaIni  
+      object_Car.rotation.y = -Math.PI;
       object_Car.position.x -= car_speed;
     }
   }
-  if (object_Car.position.x <= xPistaIni) {
-    if (object_Car.position.y > yPistaIni && object_Car.position.y < (yPista * 1.05)) {
-      object_Car.rotation.z = (Math.PI / 2) * 3;
-      object_Car.position.y -= car_speed;
+  if (object_Car.position.x <= xPista) {
+    if (object_Car.position.z >= zPistaIni && object_Car.position.z < zPista) {
+      object_Car.position.x = xPista
+      object_Car.rotation.y = -Math.PI / 2;
+      object_Car.position.z += car_speed;
+      
     }
   }
-  //console.log("X: "+object_Car.position.x+" Y: "+object_Car.position.y+ " tamanho tela:"+largura+"x"+altura)
+  if (object_Car.position.z >= zPista) {    
+    if (object_Car.position.x < xPistaIni && object_Car.position.x >= xPista) {      
+      object_Car.position.z = zPista
+      object_Car.rotation.y = Math.PI*2;
+      object_Car.position.x += car_speed;
+      
+    }
+  }
+  if (object_Car.position.x >= xPistaIni) {
+    if (object_Car.position.z > zPistaIni && object_Car.position.z <= zPista ) {
+      object_Car.position.x = xPistaIni
+      object_Car.rotation.y = Math.PI / 2;
+      object_Car.position.z -= car_speed;
+      
+    }
+  }
 }
+  //console.log("X: "+object_Car.position.x+" Z: "+object_Car.position.z+ " tamanho tela:"+largura+"x"+altura)
+}
+
 
 // ocultar
 window.addEventListener("keydown", function (event) {
@@ -192,42 +185,54 @@ window.addEventListener("keydown", function (event) {
     return;
   }
   if (event.key == "v") {
+    if(gridHelper.visible == true){      
+      gridHelper.visible = false;
+      gridAparece.checked = false;
+    }      
+    else{
+      gridHelper.visible = true;
+      gridAparece.checked = true;
+    }     
+    return;
+  }
+  if (event.key == "b") {
     if(axesHelper.visible == true){
       axesHelper.visible = false;
-      gridHelper.visible = false;
-      gridAndAxes.checked = false;
+      axesAparece.checked = false;
     }      
     else{
       axesHelper.visible = true;
-      gridHelper.visible = true;
-      gridAndAxes.checked = true;
+      axesAparece.checked = true;
+    }     
+    return;
+  }
+  if (event.key == "x") {
+    if(carMove==true){
+      carMove = false;
+      carStop.checked = false;
+    }      
+    else{
+      carMove = true;
+      carStop.checked = true;
     }     
     return;
   }
 });
 
-
-var gridAndAxes = document.getElementById("gridhelper");
-var carAparece = document.getElementById("car");
-
-document.getElementById("gridhelper").onclick = function() {
-  if(gridAndAxes.checked){
+document.getElementById("axeshelper").onclick = function() {
+  if(axesAparece.checked){
     axesHelper.visible = true;
-    gridHelper.visible = true;
   }
   else{
     axesHelper.visible = false;
-    gridHelper.visible = false;
   }
 }
 
 document.getElementById("gridhelper").onclick = function() {
-  if(gridAndAxes.checked){
-    axesHelper.visible = true;
+  if(gridAparece.checked){
     gridHelper.visible = true;
   }
   else{
-    axesHelper.visible = false;
     gridHelper.visible = false;
   }
 }
@@ -240,7 +245,15 @@ document.getElementById("car").onclick = function() {
   }
 }
 
-
+document.getElementById("stopcar").onclick = function() {
+  console.log("stop!")
+  if(carStop.checked){
+    carMove = true;
+  }
+  else{
+    carMove = false;
+  }
+}
 
 var animate = function () {
   requestAnimationFrame(animate);
@@ -254,11 +267,10 @@ var animate = function () {
 /** Scene add */
 scene.add(axesHelper);
 scene.add(gridHelper);
+//scene.add(camera);
 scene.add(object_Car);
 scene.add(ambient_light);
 scene.add(directional_light);
 /** Fim Scene add */
-
-//alert("Pressione PageUP para mostrar ou esconder o carro.\nPressione PageDown para mostrar ou esconder os eixos.");
 
 animate();

@@ -5,28 +5,31 @@
 <title>Grupo HSO - Trabalho 1</title>
 <style>
   body { margin: 5%; overflow-y: scroll;}
-    
-  #quadro1{    
-    display: grid;
+  canvas{
+    display:block;
+    margin-left: auto;
+    margin-right: auto ;
+  }
+  
+  #quadro{    
+    width: 1000px;
+    display: grid;    
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr;
     grid-template-areas:
-     " mycanvas quadro2";
+     " quadro1 quadro2";
     margin-left: auto;
     margin-right: auto 
   }
-  #mycanvas { 
+  #quadro1{
+    grid-area: quadro1;
     display: grid;
-    grid-area: mycanvas;    
-    margin-left: auto;
-    margin-right: auto ;
-    position: relative;        
   }
   
   #quadro2{
     grid-area: quadro2;
     display: grid;
-  }
+  }*/
   
 </style>
   <script src="three.js"></script>
@@ -35,15 +38,34 @@
 </head>
 <body>
   <h1>Grupo HSO - Trabalho 1</h1>  
-  <h2>Alunos: <li>Carlos Renato de Andrade Figueiredo</li><li>Matheus Martins</li><li>Samara Ribeiro Silva</li></h2>
-  <div id="quadro1">    
-    <canvas id="mycanvas"></canvas>   
+  <h3>Alunos: 
+    <li>Carlos Renato de Andrade Figueiredo</li>
+    <li>Matheus Martins</li>
+    <li>Samara Ribeiro Silva</li>
+  </h3>
+  <a href="http://encurtador.com.br/iGIL0">Notebook com cálculos das matrizes</a><br>
+  <a href="https://github.com/hulkita/CCI36-Realidade-Aumentada">GitHub Projeto</a>
+  
+  <div id="quadro">           
+    <div id = "quadro1">
+      <p>Pressione "c" para mostrar ou esconder o carro.
+        <br>
+        Pressione "x" para parar o carro.
+        <br>
+        Pressione "v" para mostrar ou esconder o Grid Helper.
+        <br>
+        Pressione "b" para mostrar ou esconder o Axes Helper.
+      </p>
+    </div>
     <div id = "quadro2">
-      <p>Pressione "c" para mostrar ou esconder o carro.<br>Pressione "v" para mostrar ou esconder os eixos.</p>
-      <label><input id="gridhelper" type="checkbox" checked >Mostrar Grid Helper e Axes Helper</label>
-      <label><input id="car" type="checkbox" checked >Mostrar Carro</label>
+      <label><input id="car" type="checkbox" checked >Mostrar Carro</label><br>
+      <label><input id="stopcar" type="checkbox" checked >Parar Carro</label><br>
+      <label><input id="gridhelper" type="checkbox" checked >Mostrar Grid Helper</label><br>
+      <label><input id="axeshelper" type="checkbox" checked >Mostrar Axes Helper</label><br>
+      
     </div>
   </div>
+  <canvas width="1000" height="876" id="mycanvas"></canvas>
   
   <script src="script.js"></script>
   
