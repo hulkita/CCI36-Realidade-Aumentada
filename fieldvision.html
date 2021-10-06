@@ -1,53 +1,61 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset=utf-8>
-<title>Grupo HSO - Trabalho 1</title>
-<style>
-  body { margin: 5%; overflow-y: scroll;}
-  canvas{
-    display:block;
-    margin-left: auto;
-    margin-right: auto ;
-  }
-  
-  #quadro{    
-    width: 1000px;
-    display: grid;    
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr;
-    grid-template-areas:
-     " quadro1 quadro2";
-    margin-left: auto;
-    margin-right: auto 
-  }
-  #quadro1{
-    grid-area: quadro1;
-    display: grid;
-  }
-  
-  #quadro2{
-    grid-area: quadro2;
-    display: grid;
-  }*/
-  
-</style>
-  <script src="three.js"></script>
-  <script src="https://unpkg.com/three@0.77.0/examples/js/controls/OrbitControls.js"></script>  
+  <meta charset=utf-8>
+  <title>Grupo HSO - Trabalho 1</title>
+  <style>
+    body {
+      margin: 5%;
+      overflow-y: scroll;
+    }
+
+    canvas {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #quadro {
+      width: 1000px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr;
+      grid-template-areas:
+        " quadro1 quadro2";
+      margin-left: auto;
+      margin-right: auto
+    }
+
+    #quadro1 {
+      grid-area: quadro1;
+      display: grid;
+    }
+
+    #quadro2 {
+      grid-area: quadro2;
+      display: grid;
+    }
+
+    */
+  </style>
+  <script src="/js/three.js"></script>
+  <script src="https://unpkg.com/three@0.77.0/examples/js/controls/OrbitControls.js"></script>
 
 </head>
+
 <body>
-  <h1>Grupo HSO - Trabalho 1</h1>  
-  <h3>Alunos: 
+  <h1>Grupo HSO - Trabalho 1</h1>
+  <h3>Alunos:
     <li>Carlos Renato de Andrade Figueiredo</li>
     <li>Matheus Martins</li>
     <li>Samara Ribeiro Silva</li>
   </h3>
   <a href="http://encurtador.com.br/iGIL0">Notebook com cálculos das matrizes</a><br>
   <a href="https://github.com/hulkita/CCI36-Realidade-Aumentada">GitHub Projeto</a>
-  
-  <div id="quadro">           
-    <div id = "quadro1">
+
+  <div id="quadro">
+    <div id="quadro1">
       <p>Pressione "c" para mostrar ou esconder o carro.
         <br>
         Pressione "x" para parar o carro.
@@ -57,18 +65,18 @@
         Pressione "b" para mostrar ou esconder o Axes Helper.
       </p>
     </div>
-    <div id = "quadro2">
-      <label><input id="car" type="checkbox" checked >Mostrar Carro</label><br>
-      <label><input id="stopcar" type="checkbox" checked >Parar Carro</label><br>
-      <label><input id="gridhelper" type="checkbox" checked >Mostrar Grid Helper</label><br>
-      <label><input id="axeshelper" type="checkbox" checked >Mostrar Axes Helper</label><br>
-      
+    <div id="quadro2">
+      <label><input id="car" type="checkbox" checked>Mostrar Carro</label><br>
+      <label><input id="stopcar" type="checkbox" checked>Parar Carro</label><br>
+      <label><input id="gridhelper" type="checkbox" checked>Mostrar Grid Helper</label><br>
+      <label><input id="axeshelper" type="checkbox" checked>Mostrar Axes Helper</label><br>
+
     </div>
   </div>
   <canvas width="1000" height="876" id="mycanvas"></canvas>
-  
-  <script src="script.js"></script>
-  
-  
+
+  <script src="/js/script.js"></script>
+
 </body>
+
 </html>
